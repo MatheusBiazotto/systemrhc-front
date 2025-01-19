@@ -8,3 +8,6 @@ export const HTTP_STATUS = {
   NOT_FOUND: 404,
   INTERNAL_SERVER_ERROR: 500,
 };
+
+export const HABBO_FIGURE_URL =
+  "https://www.habbo.com.br/habbo-imaging/avatarimage?figure=";

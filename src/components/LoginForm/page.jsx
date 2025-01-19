@@ -9,79 +9,103 @@ import { CiLogin } from "react-icons/ci";
 import { useState } from "react";
 import { Button } from "@nextui-org/react";
 
-export default function LoginForm() {
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/navigation";
+
+export default function LoginForm({ onSubmit }) {
+  const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
 
-  async function handleLogin(data) {
+  const login = async (event) => {
+    event.preventDefault();
     setIsLoading(true);
 
+    const nickname = event.target.nickname.value;
+    const password = event.target.password.value;
+
+    const res = await onSubmit({ nickname, password });
+
+    if (res.ok) {
+      toast.success("Login efetuado com sucesso! 🎉");
+
+      localStorage.setItem("user", res?.data?.nickname);
+      router.push("/dashboard");
+      setIsLoading(false);
+      return;
+    }
+
     // Do something
+    toast.error("Verifique sua senha e/ou nickname! 😢");
     setIsLoading(false);
-  }
-
-  async function login(event) {
-    event.preventDefault();
-
-    const data = {
-      nickname: event.target.nickname.value,
-      password: event.target.password.value,
-    };
-
-    const res = await onSubmit(data);
-  }
+  };
 
   return (
-    <form className="flex flex-col p-4 lg:p-10 max-w-lg gap-4 justify-center items-center border-stone-700 border-small rounded">
-      <div className="flex gap-4 mb-4 items-center">
-        <img width={64} src="rhc1.png" />
-        <h1 className="text-2xl">System RHC - Login</h1>
-      </div>
-
-      <Input
-        className="max-w-xs"
-        id="nickname"
-        type="text"
-        label="Digite seu nick"
-        required
-      />
-      <Input
-        id="password"
-        className="max-w-xs"
-        endContent={
-          <button
-            aria-label="toggle password visibility"
-            className="focus:outline-none"
-            type="button"
-            onClick={toggleVisibility}
-          >
-            {isVisible ? (
-              <FaEye className="text-2xl text-default-400 pointer-events-none" />
-            ) : (
-              <FaEyeSlash className="text-2xl text-default-400 pointer-events-none" />
-            )}
-          </button>
-        }
-        label="Digite sua senha"
-        type={isVisible ? "text" : "password"}
-        required
-      />
-
-      <Button
-        type="submit"
-        color="success"
-        isLoading={isLoading}
-        disabled={isLoading}
-        endContent={<CiLogin size={24} />}
+    <>
+      <form
+        onSubmit={login}
+        className="flex flex-col p-4 lg:p-10 max-w-lg gap-4 justify-center items-center border-stone-700 border-small rounded"
       >
-        Entrar
-      </Button>
+        <div className="flex gap-4 mb-4 items-center">
+          <img width={64} src="rhc1.png" />
+          <h1 className="inline text-2xl">
+            System RHC - Login{" "}
+            <span style={{"font-size": "10px"}} className="rounded align-top p-0.5 bg-orange-500">BETA</span>
+          </h1>
+        </div>
 
-      <span className="text-center">
-        Em caso de problemas com login, entre em contato com a fundação! 😁👍
-      </span>
-    </form>
+        <Input
+          className="max-w-xs"
+          id="nickname"
+          type="text"
+          label="Digite seu nick"
+          required
+        />
+        <Input
+          id="password"
+          className="max-w-xs"
+          endContent={
+            <button
+              aria-label="toggle password visibility"
+              className="focus:outline-none"
+              type="button"
+              onClick={toggleVisibility}
+            >
+              {isVisible ? (
+                <FaEye className="text-2xl text-default-400 pointer-events-none" />
+              ) : (
+                <FaEyeSlash className="text-2xl text-default-400 pointer-events-none" />
+              )}
+            </button>
+          }
+          label="Digite sua senha"
+          type={isVisible ? "text" : "password"}
+          required
+        />
+
+        <Button
+          type="submit"
+          color="success"
+          isLoading={isLoading}
+          disabled={isLoading}
+          endContent={<CiLogin size={24} />}
+        >
+          Entrar
+        </Button>
+
+        <span className="text-center">
+          Em caso de problemas com login, entre em contato com a fundação! 😁👍
+        </span>
+      </form>
+      <ToastContainer
+        theme="dark"
+        position="bottom-right"
+        autoClose={5000}
+        closeOnClick
+      />
+    </>
   );
 }

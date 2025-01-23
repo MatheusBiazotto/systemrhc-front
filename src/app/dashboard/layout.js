@@ -7,6 +7,7 @@ import { cookies } from "next/headers";
 import AuthService from "@/modules/auth-module";
 import UserProvider from "@/contexts/userContext/userContext";
 import { HABBO_FIGURE_URL } from "@/constants";
+import DashboardFooter from "@/components/dashboardFooter/page";
 
 export default async function DashboardLayout({ children }) {
   const api = await apiLayer();
@@ -37,6 +38,7 @@ export default async function DashboardLayout({ children }) {
     });
   });
   const ranking = await api.ranking.getRanking();
+  const positions = await api.positions.getPositions();
 
   async function onLogout() {
     "use server";
@@ -52,8 +54,26 @@ export default async function DashboardLayout({ children }) {
     }
   }
 
+  async function handleHire(data) {
+    "use server";
+    const api = await apiLayer();
+
+    const res = await api.positions.hire(data);
+
+    return res;
+  }
+
   return (
-    <UserProvider value={{ userData, highlights, ranking }}>
+    <UserProvider
+      value={{
+        userData,
+        highlights,
+        ranking,
+        permissions,
+        positions,
+        handleHire,
+      }}
+    >
       <div className="dashboard-page">
         <div>
           <DashboardMenu
@@ -62,7 +82,12 @@ export default async function DashboardLayout({ children }) {
             onLogout={onLogout}
           />
         </div>
-        <div>{children}</div>
+        <div>
+          <div>{children}</div>
+          <div className="relative flex justify-center items-center bottom-0 p-4">
+            <DashboardFooter />
+          </div>
+        </div>
       </div>
     </UserProvider>
   );

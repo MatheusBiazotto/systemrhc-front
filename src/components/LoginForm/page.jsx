@@ -39,7 +39,7 @@ export default function LoginForm({ onSubmit }) {
     }
 
     // Do something
-    toast.error("Verifique sua senha e/ou nickname! 😢");
+    toast.error(res.data.message);
     setIsLoading(false);
   };
 
@@ -53,7 +53,12 @@ export default function LoginForm({ onSubmit }) {
           <img width={64} src="rhc1.png" />
           <h1 className="inline text-2xl">
             System RHC - Login{" "}
-            <span style={{"font-size": "10px"}} className="rounded align-top p-0.5 bg-orange-500">BETA</span>
+            <span
+              style={{ fontSize: "10px" }}
+              className="rounded align-top p-0.5 bg-orange-500"
+            >
+              BETA
+            </span>
           </h1>
         </div>
 

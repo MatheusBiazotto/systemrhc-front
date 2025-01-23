@@ -102,5 +102,26 @@ export default async function apiLayer() {
         });
       },
     },
+    positions: {
+      getPositions: async () => {
+        "use server";
+        return await callout("/positions/getPositions", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+      },
+      hire: async (props) => {
+        "use server";
+        return await callout("/positions/hire", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(props),
+        });
+      },
+    },
   };
 }

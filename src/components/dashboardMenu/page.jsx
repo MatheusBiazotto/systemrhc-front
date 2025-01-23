@@ -1,11 +1,14 @@
 "use client";
 
-import { Button } from "@nextui-org/react";
+import { Button, Input } from "@nextui-org/react";
 import { FaCircleUser } from "react-icons/fa6";
 import { FaHome } from "react-icons/fa";
 import { Link } from "@nextui-org/react";
 import { IoIosLogOut } from "react-icons/io";
 import { ImBooks } from "react-icons/im";
+import { FaHandshake } from "react-icons/fa";
+import { RiAdminLine } from "react-icons/ri";
+import { IoSearchOutline } from "react-icons/io5";
 import Footer from "@/components/footer/page";
 import {
   Navbar,
@@ -15,6 +18,7 @@ import {
   NavbarMenuToggle,
   NavbarMenu,
   NavbarMenuItem,
+  CircularProgress,
 } from "@nextui-org/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -23,6 +27,8 @@ export default function DashboardMenu({ userData, menuData, onLogout }) {
   const router = useRouter();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   const menuItems = [
     "Profile",
     "Dashboard",
@@ -46,6 +52,13 @@ export default function DashboardMenu({ userData, menuData, onLogout }) {
     }
   };
 
+  async function handleSearch(e) {
+    if (e.key === "Enter") {
+      // router.push(`/dashboard/profile/${e.target.value}`);
+      setIsLoading(true);
+    }
+  }
+
   return (
     <>
       <div className="fixed border-x-1 gap-4 rounded-e-medium border-x-gray-700 hidden sm:flex flex-col top-0 left-0 w-64 h-screen overflow-x-hidden overflow-y-auto bg-inherit text-white">
@@ -53,21 +66,41 @@ export default function DashboardMenu({ userData, menuData, onLogout }) {
           <FaCircleUser size={32} />
           <h1 className="text-1xl">{userData.nickname}</h1>
         </div>
+        <div className="flex flex-col p-2">
+          <Input
+            onKeyUp={handleSearch}
+            endContent={
+              !isLoading ? (
+                <IoSearchOutline color="#000" size={24} />
+              ) : (
+                <CircularProgress size="sm" />
+              )
+            }
+            type="text"
+            label="Pesquisar funcionário..."
+          />
+        </div>
         <div className="flex flex-col gap-2">
           <Link
             href="/dashboard"
             className="flex gap-2 p-4 text-white hover:bg-gray-700 transition-all rounded"
           >
             <FaHome size={24} />
-            <span>Início</span>
+            <span className="text-small">Início</span>
           </Link>
           {menuData.map((item, index) => (
             <Link
               key={index}
               href={"/dashboard" + item.link}
-              className="flex gap-2 p-4 text-white hover:bg-gray-700 transition-all rounded"
+              className="flex gap-2 p-4 text-small text-white hover:bg-gray-700 transition-all rounded"
             >
-              <ImBooks size={24} />
+              {item.name === "Departamento Educacional" ? (
+                <ImBooks size={24} />
+              ) : item.name === "Contratações/Promoções" ? (
+                <FaHandshake size={24} />
+              ) : item.name === "Administrador" ? (
+                <RiAdminLine size={24} />
+              ) : null}
               <span>{item.name}</span>
             </Link>
           ))}
@@ -86,7 +119,7 @@ export default function DashboardMenu({ userData, menuData, onLogout }) {
         </div>
       </div>
       <div className="sm:hidden">
-        <Navbar onMenuOpenChange={setIsMenuOpen}>
+        <Navbar isBlurred={false} onMenuOpenChange={setIsMenuOpen}>
           <NavbarContent>
             <NavbarMenuToggle
               aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -96,28 +129,7 @@ export default function DashboardMenu({ userData, menuData, onLogout }) {
               <p className="font-bold text-inherit">System RHC</p>
             </NavbarBrand>
           </NavbarContent>
-
-          <NavbarContent className="hidden sm:flex gap-4" justify="center">
-            <NavbarItem>
-              <Link color="foreground" href="#">
-                Features
-              </Link>
-            </NavbarItem>
-            <NavbarItem isActive>
-              <Link aria-current="page" href="#">
-                Customers
-              </Link>
-            </NavbarItem>
-            <NavbarItem>
-              <Link color="foreground" href="#">
-                Integrations
-              </Link>
-            </NavbarItem>
-          </NavbarContent>
           <NavbarContent justify="end">
-            <NavbarItem className="hidden lg:flex">
-              <Link href="#">Login</Link>
-            </NavbarItem>
             <NavbarItem>
               <Button
                 as={Link}
@@ -131,21 +143,35 @@ export default function DashboardMenu({ userData, menuData, onLogout }) {
             </NavbarItem>
           </NavbarContent>
           <NavbarMenu>
-            {menuItems.map((item, index) => (
+            <Input
+              endContent={<IoSearchOutline color="#000" size={24} />}
+              type="text"
+              label="Pesquisar funcionário..."
+            />
+            <NavbarMenuItem>
+              <Link
+                href="/dashboard"
+                className="flex gap-2 p-4 text-white hover:bg-gray-700 transition-all rounded"
+              >
+                <FaHome size={24} />
+                <span className="text-small">Início</span>
+              </Link>
+            </NavbarMenuItem>
+            {menuData.map((item, index) => (
               <NavbarMenuItem key={`${item}-${index}`}>
                 <Link
-                  className="w-full"
-                  color={
-                    index === 2
-                      ? "primary"
-                      : index === menuItems.length - 1
-                      ? "danger"
-                      : "foreground"
-                  }
-                  href="#"
-                  size="lg"
+                  key={index}
+                  href={"/dashboard" + item.link}
+                  className="flex gap-2 p-4 text-small text-white hover:bg-gray-700 transition-all rounded"
                 >
-                  {item}
+                  {item.name === "Departamento Educacional" ? (
+                    <ImBooks size={24} />
+                  ) : item.name === "Contratações/Promoções" ? (
+                    <FaHandshake size={24} />
+                  ) : item.name === "Administrador" ? (
+                    <RiAdminLine size={24} />
+                  ) : null}
+                  <span>{item.name}</span>
                 </Link>
               </NavbarMenuItem>
             ))}

@@ -3,6 +3,7 @@
 import DashboardAvisos from "@/components/dashboardAvisos/page";
 import DestaquesSemanais from "@/components/destaquesSemanais/page";
 import RankingPoints from "@/components/rankingPoints/page";
+
 import { useUser } from "@/contexts/userContext/userContext";
 
 export default function DashboardPage() {

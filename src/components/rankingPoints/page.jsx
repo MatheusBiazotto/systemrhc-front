@@ -19,7 +19,7 @@ export default function RankingPoints({ ranking }) {
         <h1 className="text-center text-2xl">Ranking Semanal de Pontos</h1>
       </div>
 
-      <Table aria-label="Ranking Semanal" className="w-[800px]">
+      <Table aria-label="Ranking Semanal" className="w-full sm:w-[800px]">
         <TableHeader>
           <TableColumn>POSIÇÃO</TableColumn>
           <TableColumn>NICK</TableColumn>

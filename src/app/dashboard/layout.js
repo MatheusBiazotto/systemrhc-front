@@ -39,6 +39,17 @@ export default async function DashboardLayout({ children }) {
   });
   const ranking = await api.ranking.getRanking();
   const positions = await api.positions.getPositions();
+  const courses = await api.courses.getCourses({ userId: userData._id });
+
+  async function getMyClasses(data) {
+    "use server";
+    const api = await apiLayer();
+    const res = await api.classes.getMyClasses(data);
+
+    return res;
+  }
+
+  const myClasses = await getMyClasses({ userId: userData._id });
 
   async function onLogout() {
     "use server";
@@ -63,6 +74,29 @@ export default async function DashboardLayout({ children }) {
     return res;
   }
 
+  async function onPostClass(data) {
+    "use server";
+    const api = await apiLayer();
+
+    const res = await api.classes.postClass(data);
+    return res;
+  }
+
+  async function onEditClass(data) {
+    "use server";
+
+    const api = await apiLayer();
+    const res = await api.classes.updateClass(data);
+    return res;
+  }
+
+  async function onDeleteClass(data) {
+    "use server";
+    const api = await apiLayer();
+    const res = await api.classes.deleteClass(data);
+    return res;
+  }
+
   return (
     <UserProvider
       value={{
@@ -72,6 +106,12 @@ export default async function DashboardLayout({ children }) {
         permissions,
         positions,
         handleHire,
+        courses,
+        myClasses,
+        onPostClass,
+        getMyClasses,
+        onEditClass,
+        onDeleteClass,
       }}
     >
       <div className="dashboard-page">

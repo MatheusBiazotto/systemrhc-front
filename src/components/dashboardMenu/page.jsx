@@ -9,6 +9,8 @@ import { ImBooks } from "react-icons/im";
 import { FaHandshake } from "react-icons/fa";
 import { RiAdminLine } from "react-icons/ri";
 import { IoSearchOutline } from "react-icons/io5";
+import { CiViewList } from "react-icons/ci";
+
 import Footer from "@/components/footer/page";
 import {
   Navbar,
@@ -100,6 +102,8 @@ export default function DashboardMenu({ userData, menuData, onLogout }) {
                 <FaHandshake size={24} />
               ) : item.name === "Administrador" ? (
                 <RiAdminLine size={24} />
+              ) : item.name === "Listagem de Aulas do DpE" ? (
+                <CiViewList size={24} />
               ) : null}
               <span>{item.name}</span>
             </Link>
@@ -170,6 +174,8 @@ export default function DashboardMenu({ userData, menuData, onLogout }) {
                     <FaHandshake size={24} />
                   ) : item.name === "Administrador" ? (
                     <RiAdminLine size={24} />
+                  ) : item.name === "Listagem de Aulas do DpE" ? (
+                    <CiViewList size={24} />
                   ) : null}
                   <span>{item.name}</span>
                 </Link>

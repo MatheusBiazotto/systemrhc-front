@@ -26,7 +26,7 @@ export default async function Home() {
   }
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden w-full gap-4 justify-center items-center">
+    <div className="flex p-2 flex-col min-h-screen overflow-hidden w-full gap-4 justify-center items-center">
       <LoginForm onSubmit={onLogin} />
       <Footer />
     </div>

@@ -54,6 +54,16 @@ export default async function apiLayer() {
           body: JSON.stringify(props),
         });
       },
+      register: async (props) => {
+        "use server";
+        return await callout("/auth/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(props),
+        });
+      },
     },
     perms: {
       getPermissions: async (props) => {
@@ -115,6 +125,60 @@ export default async function apiLayer() {
       hire: async (props) => {
         "use server";
         return await callout("/positions/hire", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(props),
+        });
+      },
+    },
+    courses: {
+      getCourses: async (props) => {
+        "use server";
+        return await callout("/courses/getCourses", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(props),
+        });
+      },
+    },
+    classes: {
+      postClass: async (props) => {
+        "use server";
+        return await callout("/classes/postClass", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(props),
+        });
+      },
+      updateClass: async (props) => {
+        "use server";
+        return await callout("/classes/updateClass", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(props),
+        });
+      },
+      deleteClass: async (props) => {
+        "use server";
+        return await callout("/classes/deleteClass", {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(props),
+        });
+      },
+      getMyClasses: async (props) => {
+        "use server";
+        return await callout("/classes/getMyClasses", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

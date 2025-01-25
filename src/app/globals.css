@@ -16,6 +16,28 @@
 
 body {
   color: var(--foreground);
-  background: var(--background);
+  background: #171717;
   font-family: Arial, Helvetica, sans-serif;
+
+  .dashboard-page {
+    display: grid;
+    grid-template-columns: 256px calc(100% - 256px);
+    grid-template-rows: 100%;
+    min-height: 100vh;
+  }
+
+  .dashboard-sidebar {
+    background: #242424;
+  }
+
+  .back-color-standard {
+    background: var(--background);
+  }
+
+  @media screen and (max-width: 767px) {
+    .dashboard-page {
+      display: flex;
+      flex-direction: column;
+    }
+  }
 }
